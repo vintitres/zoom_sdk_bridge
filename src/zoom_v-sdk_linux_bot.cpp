@@ -42,9 +42,6 @@
 //needed for LTT
 #include "zoom_video_sdk_session_info_interface.h"
 
-
-
-
 USING_ZOOM_VIDEO_SDK_NAMESPACE
 IZoomVideoSDK* video_sdk_obj;
 GMainLoop* loop;
@@ -58,8 +55,6 @@ bool getRawShare = false;
 bool sendRawVideo = false;
 bool sendRawAudio = false;
 bool sendRawShare = false;
-
-
 
 std::string getSelfDirPath()
 {
@@ -107,13 +102,7 @@ public:
 				printf("Error setting external source %d\n", err2);
 			}
 		};
-
-
-
-
 	}
-
-
 
 	/// \brief Triggered when session leaveSession
 	virtual void onSessionLeave()
@@ -123,12 +112,14 @@ public:
 		exit(1);
 	};
 
+	virtual void onSessionLeave(ZoomVideoSDKSessionLeaveReason eReason) override {
+		// Handle session leave event
+	}
 
 	virtual void onError(ZoomVideoSDKErrors errorCode, int detailErrorCode)
 	{
 		printf("join session errorCode : %d  detailErrorCode: %d\n", errorCode, detailErrorCode);
 	};
-
 
 	virtual void onUserJoin(IZoomVideoSDKUserHelper* pUserHelper, IVideoSDKVector<IZoomVideoSDKUser*>* userList)
 	{
@@ -160,10 +151,8 @@ public:
 		}
 	};
 
-
 	virtual void onUserVideoStatusChanged(IZoomVideoSDKVideoHelper* pVideoHelper,
 		IVideoSDKVector<IZoomVideoSDKUser*>* userList) {};
-
 
 	virtual void onUserAudioStatusChanged(IZoomVideoSDKAudioHelper* pAudioHelper,
 		IVideoSDKVector<IZoomVideoSDKUser*>* userList) {
@@ -176,6 +165,7 @@ public:
 			}
 		}
 	};
+
 	virtual void onUserShareStatusChanged(IZoomVideoSDKShareHelper* pShareHelper, IZoomVideoSDKUser* pUser, ZoomVideoSDKShareStatus status, ZoomVideoSDKShareType type) {
 		if (getRawShare) {
 			if (status == ZoomVideoSDKShareStatus_Start) {
@@ -187,26 +177,76 @@ public:
 		}
 	}
 
-	virtual void onUserRecordingConsent(IZoomVideoSDKUser* pUser) {};
+	virtual void onUserShareStatusChanged(IZoomVideoSDKShareHelper* pShareHelper,
+										IZoomVideoSDKUser* pUser,
+										IZoomVideoSDKShareAction* pShareAction) override {
+		// Handle share status change
+	}
 
+	virtual void onShareContentChanged(IZoomVideoSDKShareHelper* pShareHelper,
+									 IZoomVideoSDKUser* pUser,
+									 IZoomVideoSDKShareAction* pShareAction) override {
+		// Handle share content change
+	}
+
+	virtual void onFailedToStartShare(IZoomVideoSDKShareHelper* pShareHelper,
+									IZoomVideoSDKUser* pUser) override {
+		// Handle share start failure
+	}
+
+	virtual void onAnnotationPrivilegeChange(IZoomVideoSDKUser* pUser,
+										   IZoomVideoSDKShareAction* pShareAction) override {
+		// Handle annotation privilege change
+	}
+
+	virtual void onSpotlightVideoChanged(IZoomVideoSDKVideoHelper* pVideoHelper,
+									   IVideoSDKVector<IZoomVideoSDKUser*>* userList) override {
+		// Handle spotlight video change
+	}
+
+	virtual void onBindIncomingLiveStreamResponse(bool bSuccess,
+												const zchar_t* strStreamKeyID) override {
+		// Handle incoming live stream binding response
+	}
+
+	virtual void onUnbindIncomingLiveStreamResponse(bool bSuccess,
+												   const zchar_t* strStreamKeyID) override {
+		// Handle incoming live stream unbinding response
+	}
+
+	virtual void onIncomingLiveStreamStatusResponse(bool bSuccess,
+												  IVideoSDKVector<IncomingLiveStreamStatus>* pStreamsStatusList) override {
+		// Handle live stream status response
+	}
+
+	virtual void onStartIncomingLiveStreamResponse(bool bSuccess,
+												 const zchar_t* strStreamKeyID) override {
+		// Handle start live stream response
+	}
+
+	virtual void onStopIncomingLiveStreamResponse(bool bSuccess,
+												const zchar_t* strStreamKeyID) override {
+		// Handle stop live stream response
+	}
+
+	virtual void onShareContentSizeChanged(IZoomVideoSDKShareHelper* pShareHelper,
+										 IZoomVideoSDKUser* pUser,
+										 IZoomVideoSDKShareAction* pShareAction) override {
+		// Handle share content size change
+	}
+
+	virtual void onUserRecordingConsent(IZoomVideoSDKUser* pUser) {};
 
 	virtual void onLiveStreamStatusChanged(IZoomVideoSDKLiveStreamHelper* pLiveStreamHelper, ZoomVideoSDKLiveStreamStatus status) {};
 
-
-	virtual void onChatNewMessageNotify(IZoomVideoSDKChatHelper* pChatHelper, IZoomVideoSDKChatMessage* messageItem) {
-
-	};
-
+	virtual void onChatNewMessageNotify(IZoomVideoSDKChatHelper* pChatHelper, IZoomVideoSDKChatMessage* messageItem) {};
 
 	virtual void onUserHostChanged(IZoomVideoSDKUserHelper* pUserHelper, IZoomVideoSDKUser* pUser) {};
-
 
 	virtual void onUserActiveAudioChanged(IZoomVideoSDKAudioHelper* pAudioHelper,
 		IVideoSDKVector<IZoomVideoSDKUser*>* list) {};
 
-
 	virtual void onSessionNeedPassword(IZoomVideoSDKPasswordHandler* handler) {};
-
 
 	virtual void onSessionPasswordWrong(IZoomVideoSDKPasswordHandler* handler) {};
 
@@ -256,12 +296,9 @@ public:
 
 	virtual void onSharedAudioRawDataReceived(AudioRawData* data_) {};
 
-
 	virtual void onUserManagerChanged(IZoomVideoSDKUser* pUser) {};
 
-
 	virtual void onUserNameChanged(IZoomVideoSDKUser* pUser) {};
-
 
 	virtual void onCameraControlRequestResult(IZoomVideoSDKUser* pUser, bool isApproved) {};
 
@@ -270,21 +307,17 @@ public:
 		ZoomVideoSDKCameraControlRequestType requestType,
 		IZoomVideoSDKCameraControlRequestHandler* pCameraControlRequestHandler) {};
 
+	virtual void onCommandReceived(IZoomVideoSDKUser* sender, const zchar_t* strCmd) {}
 
-	virtual void onCommandReceived(IZoomVideoSDKUser* sender, const zchar_t* strCmd) {
+	virtual void onCommandChannelConnectResult(bool isSuccess) {};
 
-	}
-	virtual void onCommandChannelConnectResult(bool isSuccess) {
-
-	};
 	virtual void onInviteByPhoneStatus(PhoneStatus status, PhoneFailedReason reason) {};
-	
-	virtual void onCalloutJoinSuccess(IZoomVideoSDKUser* pUser, const zchar_t* phoneNumber) {};
-	virtual void onCloudRecordingStatus(RecordingStatus status, IZoomVideoSDKRecordingConsentHandler* pHandler) {
-	
-	};
-	virtual void onHostAskUnmute() {};
 
+	virtual void onCalloutJoinSuccess(IZoomVideoSDKUser* pUser, const zchar_t* phoneNumber) {};
+
+	virtual void onCloudRecordingStatus(RecordingStatus status, IZoomVideoSDKRecordingConsentHandler* pHandler) {};
+
+	virtual void onHostAskUnmute() {};
 
 	virtual void onMultiCameraStreamStatusChanged(ZoomVideoSDKMultiCameraStreamStatus status, IZoomVideoSDKUser* pUser, IZoomVideoSDKRawDataPipe* pVideoPipe) {}
 	virtual void onMicSpeakerVolumeChanged(unsigned int micVolume, unsigned int speakerVolume) {}
@@ -295,24 +328,15 @@ public:
 	/// \brief Notify that the camera list has changed.
 	virtual void onCameraListChanged() {};
 
-	virtual void onLiveTranscriptionStatus(ZoomVideoSDKLiveTranscriptionStatus status) {
-	
+	virtual void onLiveTranscriptionStatus(ZoomVideoSDKLiveTranscriptionStatus status) {};
 
-	};
-	virtual void onLiveTranscriptionMsgReceived(const zchar_t* ltMsg, IZoomVideoSDKUser* pUser, ZoomVideoSDKLiveTranscriptionOperationType type) {
-		
-	};
-	virtual void onLiveTranscriptionMsgInfoReceived(ILiveTranscriptionMessageInfo* messageInfo) {
-		
-	};
-	virtual void onLiveTranscriptionMsgError(ILiveTranscriptionLanguage* spokenLanguage, ILiveTranscriptionLanguage* transcriptLanguage) {
-		
-	};
-	virtual void onChatMsgDeleteNotification(IZoomVideoSDKChatHelper* pChatHelper, const zchar_t* msgID, ZoomVideoSDKChatMessageDeleteType deleteBy) {
-		
+	virtual void onLiveTranscriptionMsgReceived(const zchar_t* ltMsg, IZoomVideoSDKUser* pUser, ZoomVideoSDKLiveTranscriptionOperationType type) {};
 
+	virtual void onLiveTranscriptionMsgInfoReceived(ILiveTranscriptionMessageInfo* messageInfo) {};
 
-	};
+	virtual void onLiveTranscriptionMsgError(ILiveTranscriptionLanguage* spokenLanguage, ILiveTranscriptionLanguage* transcriptLanguage) {};
+
+	virtual void onChatMsgDeleteNotification(IZoomVideoSDKChatHelper* pChatHelper, const zchar_t* msgID, ZoomVideoSDKChatMessageDeleteType deleteBy) {};
 
 	virtual void onProxyDetectComplete() {};
 	virtual void onProxySettingNotification(IZoomVideoSDKProxySettingHandler* handler) {};
@@ -321,14 +345,11 @@ public:
 	virtual void onCallCRCDeviceStatusChanged(ZoomVideoSDKCRCCallStatus status) {};
 
 	virtual void onVirtualSpeakerMixedAudioReceived(AudioRawData* data_) {
-
 		printf("onVirtualSpeakerMixedAudioReceived() main \n");
 		printf("data %s \n", data_->GetBuffer());
-
 	};
 
 	virtual void onVirtualSpeakerOneWayAudioReceived(AudioRawData* data_, IZoomVideoSDKUser* pUser) {
-
 		printf("onVirtualSpeakerOneWayAudioReceived() main\n");
 		printf("data %s \n", data_->GetBuffer());
 	};
@@ -383,7 +404,6 @@ void joinVideoSDKSession(std::string& session_name, std::string& session_psw, st
 	session_context.audioOption.connect = false;
 	session_context.audioOption.mute = true;
 
-
 	if (getRawVideo) {
 		//nothing much to do before joining session
 	}
@@ -428,7 +448,6 @@ void joinVideoSDKSession(std::string& session_name, std::string& session_psw, st
 	IZoomVideoSDKSession* session = NULL;
 	if (video_sdk_obj)
 		session = video_sdk_obj->joinSession(session_context);
-
 }
 
 // Function to process a line containing a key-value pair
@@ -449,7 +468,7 @@ void processLine(const std::string& line, std::map<std::string, std::string>& co
 
 		// Remove double-quote characters and carriage return ('\r') from the value
 		value.erase(std::remove_if(value.begin(), value.end(), [](char c) { return c == '"' || c == '\r'; }), value.end());
-	
+
 		// Store the key-value pair in the map
 		config[key] = value;
 	}
@@ -457,7 +476,6 @@ void processLine(const std::string& line, std::map<std::string, std::string>& co
 
 void ReadTEXTSettings()
 {
-
 	std::string self_dir = getSelfDirPath();
 	printf("self path: %s\n", self_dir.c_str());
 	self_dir.append("/config.txt");
@@ -467,7 +485,6 @@ void ReadTEXTSettings()
 		std::cerr << "Error opening config file." << std::endl;
 	}
 	else {
-
 		std::cerr << "Readfile success." << std::endl;
 	}
 
@@ -483,7 +500,6 @@ void ReadTEXTSettings()
 
 	// Example: Accessing values by key
 	if (config.find("session_name") != config.end()) {
-
 		session_name = config["session_name"];
 		std::cout << "session_name: " << config["session_name"] << std::endl;
 	}
@@ -492,11 +508,10 @@ void ReadTEXTSettings()
 		std::cout << "session_token: " << session_token << std::endl;
 	}
 	if (config.find("session_psw") != config.end()) {
-
 		session_psw = config["session_psw"];
 		std::cout << "session_psw: " << session_psw << std::endl;
 	}
-	
+
 	if (config.find("GetVideoRawData") != config.end()) {
 		std::cout << "GetVideoRawData before parsing is : " << config["GetVideoRawData"] << std::endl;
 
@@ -546,8 +561,6 @@ void ReadTEXTSettings()
 	// Additional processing or handling of parsed values can be done here
 
 	printf("directory of config file: %s\n", self_dir.c_str());
-
-
 }
 
 gboolean timeout_callback(gpointer data)
@@ -561,13 +574,12 @@ void my_handler(int s)
 {
 	printf("\nCaught signal %d\n", s);
 	video_sdk_obj->leaveSession(false);
-	
+
 	video_sdk_obj->cleanup();
-	
+
 	printf("Leaving session.\n");
 	video_sdk_obj = nullptr;
 	DestroyZoomVideoSDKObj();
-
 }
 
 //main
@@ -584,14 +596,10 @@ int main(int argc, char* argv[])
 	t.seekg(0);
 	t.read(&buffer[0], size);
 
-	
-
 	ReadTEXTSettings();
-	
 
 	printf("begin to join: %s\n", self_dir.c_str());
 	joinVideoSDKSession(session_name, session_psw, session_token);
-
 
 	struct sigaction sigIntHandler;
 	sigIntHandler.sa_handler = my_handler;
