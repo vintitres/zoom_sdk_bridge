@@ -3,16 +3,12 @@
 
 using namespace ZOOMVIDEOSDK;
 
-
-
-   void ZoomVideoSDKShareSource::onShareSendStarted(IZoomVideoSDKShareSender* pSender) {
-   //sendRawShare
-   printf("onShareSendStarted() invoked \n");
-
-   };
-   void ZoomVideoSDKShareSource::onShareSendStopped() {
-   //sendRawShare
-        printf("onShareSendStopped() invoked \n");
-   };
-
-
+void ZoomVideoSDKShareSource::onShareSendStarted(
+    IZoomVideoSDKShareSender *pSender) {
+  // sendRawShare
+  printf("onShareSendStarted() invoked \n");
+};
+void ZoomVideoSDKShareSource::onShareSendStopped() {
+  // sendRawShare
+  printf("onShareSendStopped() invoked \n");
+};
