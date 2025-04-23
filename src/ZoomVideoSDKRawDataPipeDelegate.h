@@ -14,9 +14,10 @@ using namespace ZOOMVIDEOSDK;
 class ZoomVideoSDKRawDataPipeDelegate :
     private IZoomVideoSDKRawDataPipeDelegate
 {
-	virtual void onRawDataFrameReceived(YUVRawDataI420* data);
-	virtual void onRawDataStatusChanged(RawDataStatus status);
-	static ZoomVideoSDKRawDataPipeDelegate* find_instance(IZoomVideoSDKUser* user);
+    virtual void onRawDataFrameReceived(YUVRawDataI420 *data) override;
+    virtual void onRawDataStatusChanged(RawDataStatus status) override;
+    virtual void onShareCursorDataReceived(ZoomVideoSDKShareCursorData info) override;
+    static ZoomVideoSDKRawDataPipeDelegate* find_instance(IZoomVideoSDKUser* user);
 
 	int instance_id_;
 	static int instance_count;
@@ -25,7 +26,7 @@ class ZoomVideoSDKRawDataPipeDelegate :
 
 
 
-	
+
 	unsigned char* frame_buffer_in;
 	unsigned char* frame_buffer_out;
 	int in_width = 0;
@@ -33,13 +34,13 @@ class ZoomVideoSDKRawDataPipeDelegate :
 	int out_width = 1280;
 	int out_height = 720;
 
-	
+
 
 	//Output YUV
 	FILE* fp_yuv;
 	int isOutputYUV = 0;
 
-	
+
 	int picture_size;
 	int y_size;
 	int framecnt = 0;
@@ -50,7 +51,7 @@ class ZoomVideoSDKRawDataPipeDelegate :
 	//Output video file name.
 	char fn_out[120];
 
-public: 
+public:
 	ZoomVideoSDKRawDataPipeDelegate(IZoomVideoSDKUser* user);
 	ZoomVideoSDKRawDataPipeDelegate(IZoomVideoSDKUser* user, bool isShareScreen);
 	~ZoomVideoSDKRawDataPipeDelegate();

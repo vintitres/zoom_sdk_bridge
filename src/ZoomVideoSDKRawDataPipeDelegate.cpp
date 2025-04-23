@@ -20,7 +20,8 @@ ZoomVideoSDKRawDataPipeDelegate::ZoomVideoSDKRawDataPipeDelegate(IZoomVideoSDKUs
 {
 	instance_id_ = instance_count++;
 	user_ = user;
-	user_->GetSharePipe()->subscribe(ZoomVideoSDKResolution_360P, this);
+	// TODO
+	// user_->GetSharePipe()->subscribe(ZoomVideoSDKResolution_360P, this);
 	list_.push_back(this);
 }
 
@@ -87,7 +88,7 @@ void ZoomVideoSDKRawDataPipeDelegate::onRawDataFrameReceived(YUVRawDataI420 *dat
 		current_sourceID = sourceID;
 		in_width = width;
 		in_height = height;
-		
+
 	}
 	else
 	{
@@ -104,10 +105,14 @@ void ZoomVideoSDKRawDataPipeDelegate::onRawDataStatusChanged(RawDataStatus statu
 	{
 	}
 }
+void ZoomVideoSDKRawDataPipeDelegate::onShareCursorDataReceived(ZoomVideoSDKShareCursorData info)
+{
+	// Implement cursor data handling if needed, or leave empty if not using cursor data
+}
 
 void ZoomVideoSDKRawDataPipeDelegate::err_msg(int code)
 {
-	
+
 
 }
 
