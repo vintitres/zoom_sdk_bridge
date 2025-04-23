@@ -23,12 +23,13 @@ link_directories(${GLIB_LIBRARY_DIRS} ${GIO_LIBRARY_DIRS})
 include_directories(${GLIB_INCLUDE_DIRS} ${GIO_INCLUDE_DIRS})
 add_definitions(${GLIB_CFLAGS_OTHER} ${GIO_CFLAGS_OTHER})
 
-add_executable(zoom_v-sdk_linux_bot ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKRawDataPipeDelegate.cpp  
-                                ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVirtualAudioMic.cpp 
-                                ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVirtualAudioSpeaker.cpp 
-                                 ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKShareSource.cpp 
-                                 ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVideoSource.cpp 
-                                 ${CMAKE_SOURCE_DIR}/src/zoom_v-sdk_linux_bot.cpp  
+add_executable(zoom_v-sdk_linux_bot ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKRawDataPipeDelegate.cpp
+                                ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVirtualAudioMic.cpp
+                                ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVirtualAudioSpeaker.cpp
+                                 ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKShareSource.cpp
+                                 ${CMAKE_SOURCE_DIR}/src/ZoomVideoSDKVideoSource.cpp
+                                 ${CMAKE_SOURCE_DIR}/src/zoom_error_helper.cpp
+                                 ${CMAKE_SOURCE_DIR}/src/zoom_v-sdk_linux_bot.cpp
                                  )
 
 target_link_libraries(zoom_v-sdk_linux_bot PkgConfig::deps)

@@ -42,6 +42,9 @@
 // needed for LTT
 #include "zoom_video_sdk_session_info_interface.h"
 
+// needed for error handling
+#include "zoom_error_helper.h"
+
 USING_ZOOM_VIDEO_SDK_NAMESPACE
 IZoomVideoSDK *video_sdk_obj;
 GMainLoop *loop;
@@ -115,8 +118,9 @@ public:
   }
 
   virtual void onError(ZoomVideoSDKErrors errorCode, int detailErrorCode) {
-    printf("join session errorCode : %d  detailErrorCode: %d\n", errorCode,
-           detailErrorCode);
+    const char *errorName = getErrorName(errorCode);
+    printf("join session errorCode : %d (%s)  detailErrorCode: %d\n", errorCode,
+           errorName, detailErrorCode);
   };
 
   virtual void onUserJoin(IZoomVideoSDKUserHelper *pUserHelper,
@@ -475,8 +479,8 @@ void joinVideoSDKSession(std::string &session_name, std::string &session_psw,
     // this code to load virtualaudiospeaker is needed if you are using headless
     // linux, or linux which does not come with soundcard. if you do not wish to
     // load virtualaudiospeaker, you can alternatively install `apt install
-    // pulseaudio` on your linux distro ZoomVideoSDKVirtualAudioSpeaker* vSpeaker
-    // =new ZoomVideoSDKVirtualAudioSpeaker();
+    // pulseaudio` on your linux distro ZoomVideoSDKVirtualAudioSpeaker*
+    // vSpeaker =new ZoomVideoSDKVirtualAudioSpeaker();
     // session_context.virtualAudioSpeaker =vSpeaker;
 
     session_context.audioOption.connect = true;
