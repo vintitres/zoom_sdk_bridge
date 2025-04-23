@@ -1,4 +1,7 @@
 ﻿/config.txt
 /.vs
-/out/build
+/out/build/
 /CMakeSettings.json
+/build/
+/bin/
+
